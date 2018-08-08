@@ -208,6 +208,10 @@ public class BuscadorSala extends javax.swing.JFrame {
 
     private void obtenerSalas(){
         ArrayList<BOSala> salas = SalaController.obtenerSalas();
+        mostrarSalas(salas);
+    }
+    
+    public void mostrarSalas(ArrayList<BOSala> salas){
         if(salas != null && !salas.isEmpty()){
             DefaultTableModel model = (DefaultTableModel) tblSalas.getModel();
             salas.forEach((sala) -> {

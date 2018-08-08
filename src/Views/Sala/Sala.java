@@ -371,6 +371,7 @@ public class Sala extends javax.swing.JFrame {
     }
 
     private void pintarPersonajes(ArrayList<BOPersonaje> personajes) {
+        pnlPersonajes.removeAll();
         pnlPersonajes.setBounds(0,0,3000, (int) this.getBounds().getHeight());
         pnlPersonajes.setLayout(new GridLayout(4,3));
         
@@ -383,16 +384,17 @@ public class Sala extends javax.swing.JFrame {
     }
 
     void setPersonajeDescriptor(BOPersonaje personaje) {
-        if(SalaController.setPersonaje(personaje,sala.getId())){
-            mostrarChat();
-        }
         if(jugadorPrin.getRol() == 1){
-            sala.setPersonaje(personaje);
-            mostrarPersonaje();
+            if(SalaController.setPersonaje(personaje,sala.getId())){
+                sala.setPersonaje(personaje);
+            }
         }
+        mostrarPersonaje();
+        mostrarChat();
     }
 
     private void mostrarChat() {
+        pnlChat.removeAll();
         pnlChat.setVisible(true);
         pnlChat.setLayout(new GridLayout(1,1));
         _Chat chatView = new _Chat(this);
@@ -417,10 +419,15 @@ public class Sala extends javax.swing.JFrame {
 
     private void mostrarPersonaje() {
         pnlPersonaje.setLayout(new GridLayout(1,1));
-        _PersonajeDesc personaje = new _PersonajeDesc(sala.getPersonaje());
-        pnlPersonaje.add(personaje);
-        pnlPersonaje.setVisible(true);
-        pnlPersonaje.revalidate(); // to invoke the layout managers
-        pnlPersonaje.repaint(); // sometimes needed
+        if(jugadorPrin.getRol() == 1){
+            _PersonajeDesc personaje = new _PersonajeDesc(sala.getPersonaje());
+            pnlPersonaje.add(personaje);
+            pnlPersonaje.setVisible(true);
+            pnlPersonaje.revalidate(); // to invoke the layout managers
+            pnlPersonaje.repaint(); // sometimes needed
+        }
+        else{
+            pnlPersonaje.removeAll();
+        }
     }
 }
