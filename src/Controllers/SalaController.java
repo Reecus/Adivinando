@@ -119,4 +119,14 @@ public final class SalaController {
     private static void terminarJuego() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public static ArrayList<String> obtenerPreguntas(int idCategoria) {
+        ArrayList<String> preguntas = BLSala.obtenerPreguntas(idCategoria);
+        return preguntas;
+    }
+
+    public static void registrarPuntos(BOSala sala, BOJugador jugadorPrin) {
+        BLSala.registrarPuntos(sala,jugador);
+    }
+
 }

@@ -5,17 +5,29 @@
  */
 package Views.Sala;
 
+import Models.BusinessObject.BOJugador;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+
 /**
  *
  * @author User
  */
 public class _Chat extends javax.swing.JPanel {
-
+    Sala sala;
+    
     /**
      * Creates new form _Chat
      */
     public _Chat() {
         initComponents();
+    }
+    
+    public _Chat(Sala sala) {
+        initComponents();
+        this.sala = sala;
     }
 
     /**
@@ -27,27 +39,37 @@ public class _Chat extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         txtIntento = new javax.swing.JTextField();
         btnEnviar = new javax.swing.JButton();
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 424, Short.MAX_VALUE)
-        );
+        jScrollPane1 = new javax.swing.JScrollPane();
+        pnlChat = new javax.swing.JPanel();
 
         txtIntento.setToolTipText("Adivina el personaje...");
 
         btnEnviar.setText("Enviar");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        pnlChat.setBackground(new java.awt.Color(255, 255, 255));
+        pnlChat.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout pnlChatLayout = new javax.swing.GroupLayout(pnlChat);
+        pnlChat.setLayout(pnlChatLayout);
+        pnlChatLayout.setHorizontalGroup(
+            pnlChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 509, Short.MAX_VALUE)
+        );
+        pnlChatLayout.setVerticalGroup(
+            pnlChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 422, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(pnlChat);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -57,7 +79,7 @@ public class _Chat extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtIntento, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -68,7 +90,7 @@ public class _Chat extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtIntento)
@@ -77,10 +99,30 @@ public class _Chat extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        // TODO add your handling code here:
+        sala.ingresarIntento(txtIntento.getText());
+        pnlChat.setLayout(new BoxLayout(pnlChat,BoxLayout.Y_AXIS));
+        _ChatMessage message = new _ChatMessage(txtIntento.getText());
+        pnlChat.add(message);
+        this.setVisible(true);
+        this.revalidate(); // to invoke the layout managers
+        this.repaint(); // sometimes needed
+    }//GEN-LAST:event_btnEnviarActionPerformed
+
+    public void ingresarMensaje(String mensaje, Color color){
+        _ChatMessage message = new _ChatMessage(mensaje);
+        message.setMsgColor(color);
+        pnlChat.add(message);
+        this.setVisible(true);
+        this.revalidate(); // to invoke the layout managers
+        this.repaint(); // sometimes needed
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviar;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel pnlChat;
     private javax.swing.JTextField txtIntento;
     // End of variables declaration//GEN-END:variables
 }

@@ -191,4 +191,17 @@ public final class BLSala {
             return salaJuego.getRonda() + 1;
         return -1;
     }
+
+    public static ArrayList<String> obtenerPreguntas(int idCategoria) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public static void registrarPuntos(BOSala sala, BOJugador jugador) {
+        //Se registran los puntos de la ronda para el jugador en la base de datos...
+        for(BOJugador jugadorBD : jugadoresDeSala){
+            if(jugadorBD.getIdJugador() == jugador.getIdJugador()){
+                jugadorBD.setPuntos(jugadorBD.getPuntos() + 10);
+            }
+        }
+    }
 }

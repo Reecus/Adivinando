@@ -7,6 +7,7 @@ package Views.Sala;
 
 import Controllers.SalaController;
 import Models.BusinessObject.*;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -20,6 +21,7 @@ public class Sala extends javax.swing.JFrame {
     BOJugador jugadorPrin;
     BOSala sala;
     ArrayList<_Categoria> categoriaItems;
+    _Chat chat;
 
     public Sala(BOJugador jugador, BOSala sala) {
         this.jugadorPrin = jugador;
@@ -51,6 +53,7 @@ public class Sala extends javax.swing.JFrame {
         pnlPersonajes = new javax.swing.JPanel();
         pnlDescriptor = new javax.swing.JPanel();
         pnlChat = new javax.swing.JPanel();
+        pnlPersonaje = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -141,7 +144,18 @@ public class Sala extends javax.swing.JFrame {
         );
         pnlChatLayout.setVerticalGroup(
             pnlChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout pnlPersonajeLayout = new javax.swing.GroupLayout(pnlPersonaje);
+        pnlPersonaje.setLayout(pnlPersonajeLayout);
+        pnlPersonajeLayout.setHorizontalGroup(
+            pnlPersonajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlPersonajeLayout.setVerticalGroup(
+            pnlPersonajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 148, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pnlDescriptorLayout = new javax.swing.GroupLayout(pnlDescriptor);
@@ -150,13 +164,17 @@ public class Sala extends javax.swing.JFrame {
             pnlDescriptorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDescriptorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlDescriptorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlPersonaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlDescriptorLayout.setVerticalGroup(
             pnlDescriptorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDescriptorLayout.createSequentialGroup()
-                .addGap(165, 165, 165)
+                .addContainerGap()
+                .addComponent(pnlPersonaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -317,12 +335,6 @@ public class Sala extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Elige un personaje para describir");
         pintarPersonajes(personajes);
     }
-    
-    
-    public void comenzarJuego() {
-        pnlCategorias.setVisible(false);
-        
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -331,6 +343,7 @@ public class Sala extends javax.swing.JFrame {
     private javax.swing.JPanel pnlChat;
     private javax.swing.JPanel pnlDescriptor;
     private javax.swing.JPanel pnlJugadores;
+    private javax.swing.JPanel pnlPersonaje;
     private javax.swing.JPanel pnlPersonajes;
     private javax.swing.JPanel pnlTablero;
     private javax.swing.JScrollPane scroll;
@@ -338,7 +351,9 @@ public class Sala extends javax.swing.JFrame {
 
     public void mostrarDescriptor(BOJugador descriptor) {
         JOptionPane.showMessageDialog(this, "Tu eres el descriptor, " + descriptor.getNombre() + "!");
-        SalaController.mostrarPersonajes();
+        if(jugadorPrin.getRol() == 1){
+            SalaController.mostrarPersonajes();
+        }
     }
 
     void votarPorCategoria(BOCategoria categoria) {
@@ -352,8 +367,6 @@ public class Sala extends javax.swing.JFrame {
 
     public void mostrarCategoriaGanadora(BOCategoria catGanadora) {
         JOptionPane.showMessageDialog(this, "Jugaremos con la categoría " + catGanadora.getDescripcion() + "!");
-        pnlCategorias.setVisible(false);
-        pnlCategorias.setBounds(0, 0, 0, 0);
     }
 
     private void pintarPersonajes(ArrayList<BOPersonaje> personajes) {
@@ -372,16 +385,36 @@ public class Sala extends javax.swing.JFrame {
         if(SalaController.setPersonaje(personaje,sala.getId())){
             mostrarChat();
         }
+        if(jugadorPrin.getRol() == 1){
+            sala.setPersonaje(personaje);
+            mostrarPersonaje();
+        }
     }
 
     private void mostrarChat() {
-        pnlPersonajes.removeAll();
-        pnlPersonajes.setVisible(false);
-        pnlPersonajes.setBounds(0, 0, 0, 0);
         pnlChat.setVisible(true);
         pnlChat.setLayout(new GridLayout(1,1));
-        _Chat chatView = new _Chat();
+        _Chat chatView = new _Chat(this);
+        this.chat = chatView;
         pnlChat.add(chatView);
         this.setVisible(true);
+    }
+
+    void ingresarIntento(String text) {
+        //if(jugadorPrin.getRol() == 0){
+            if(text == null ? sala.getPersonaje().getNombre() == null : text.equals(sala.getPersonaje().getNombre())){
+                SalaController.registrarPuntos(sala,jugadorPrin);
+                chat.ingresarMensaje(jugadorPrin.getNombre() + " adivinó al personaje!",new Color(0,0,255));
+            }
+        //}
+    }
+
+    private void mostrarPersonaje() {
+        pnlPersonaje.setLayout(new GridLayout(1,1));
+        _PersonajeDesc personaje = new _PersonajeDesc(sala.getPersonaje());
+        pnlPersonaje.add(personaje);
+        pnlPersonaje.setVisible(true);
+        pnlPersonaje.revalidate(); // to invoke the layout managers
+        pnlPersonaje.repaint(); // sometimes needed
     }
 }

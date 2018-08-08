@@ -14,7 +14,15 @@ public class BOJugador {
     private String Nombre;
     private int rol;
     private int turnosComoDesc;
+    private int puntos;
 
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
     public int getIdJugador() {
         return idJugador;
     }
