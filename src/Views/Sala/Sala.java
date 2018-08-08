@@ -306,7 +306,8 @@ public class Sala extends javax.swing.JFrame {
         }
     }
     
-    public void mostrarCategorias(){   
+    public void mostrarCategorias(){
+        JOptionPane.showMessageDialog(this, "Tienen 5 segundos para votar por una categoría!");
         categoriaItems = new ArrayList<_Categoria>();
         pnlCategorias.removeAll();
         pnlCategorias.setLayout(new GridLayout(1,3));
@@ -400,13 +401,18 @@ public class Sala extends javax.swing.JFrame {
         this.setVisible(true);
     }
 
-    void ingresarIntento(String text) {
+    public boolean ingresarIntento(String text) {
+        boolean adivino = false;
         //if(jugadorPrin.getRol() == 0){
             if(text == null ? sala.getPersonaje().getNombre() == null : text.equals(sala.getPersonaje().getNombre())){
                 SalaController.registrarPuntos(sala,jugadorPrin);
                 chat.ingresarMensaje(jugadorPrin.getNombre() + " adivinó al personaje!",new Color(0,0,255));
+                jugadorPrin.setRol(0);
+                adivino = true;
+                SalaController.definirDescriptor(sala.getId());
             }
         //}
+        return adivino;
     }
 
     private void mostrarPersonaje() {

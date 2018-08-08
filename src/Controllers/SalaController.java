@@ -43,8 +43,11 @@ public final class SalaController {
             if(aux.getIdJugador() == jugador.getIdJugador()){
                 jugador.setRol(1);
             }
-            salaViewContext.mostrarDescriptor(aux);
+            else{
+                jugador.setRol(0);
             }
+            salaViewContext.mostrarDescriptor(aux);
+        }
         else{
             terminarJuego();
         }

@@ -101,16 +101,19 @@ public class _Chat extends javax.swing.JPanel {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         // TODO add your handling code here:
-        sala.ingresarIntento(txtIntento.getText());
-        pnlChat.setLayout(new BoxLayout(pnlChat,BoxLayout.Y_AXIS));
-        _ChatMessage message = new _ChatMessage(txtIntento.getText());
-        pnlChat.add(message);
-        this.setVisible(true);
-        this.revalidate(); // to invoke the layout managers
-        this.repaint(); // sometimes needed
+        if(!sala.ingresarIntento(txtIntento.getText())){
+            pnlChat.setLayout(new BoxLayout(pnlChat,BoxLayout.Y_AXIS));
+            _ChatMessage message = new _ChatMessage(txtIntento.getText());
+            pnlChat.add(message);
+            txtIntento.setText("");
+            this.setVisible(true);
+            this.revalidate(); // to invoke the layout managers
+            this.repaint(); // sometimes needed
+        }
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     public void ingresarMensaje(String mensaje, Color color){
+        pnlChat.setLayout(new BoxLayout(pnlChat,BoxLayout.Y_AXIS));
         _ChatMessage message = new _ChatMessage(mensaje);
         message.setMsgColor(color);
         pnlChat.add(message);
